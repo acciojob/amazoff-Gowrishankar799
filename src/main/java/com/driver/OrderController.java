@@ -19,15 +19,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("orders")
 public class OrderController {
 
-
+@Autowired
+Serviceclass ser;
     @PostMapping("/add-order")
     public ResponseEntity<String> addOrder(@RequestBody Order order){
+        ser.addOrder(order);
 
         return new ResponseEntity<>("New order added successfully", HttpStatus.CREATED);
     }
 
     @PostMapping("/add-partner/{partnerId}")
     public ResponseEntity<String> addPartner(@PathVariable String partnerId){
+        ser.addPartner(partnerId);
 
         return new ResponseEntity<>("New delivery partner added successfully", HttpStatus.CREATED);
     }
@@ -36,6 +39,7 @@ public class OrderController {
     public ResponseEntity<String> addOrderPartnerPair(@RequestParam String orderId, @RequestParam String partnerId){
 
         //This is basically assigning that order to that partnerId
+        ser.addOrderPartnerPair(orderId,partnerId);
         return new ResponseEntity<>("New order-partner pair added successfully", HttpStatus.CREATED);
     }
 
@@ -43,17 +47,19 @@ public class OrderController {
     public ResponseEntity<Order> getOrderById(@PathVariable String orderId){
 
         Order order= null;
-        //order should be returned with an orderId.
+        //order should be returned with an orderId
+        order = ser.getOrderById(orderId);
 
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
 
     @GetMapping("/get-partner-by-id/{partnerId}")
-    public ResponseEntity<DeliveryPartner> getPartnerById(@PathVariable String partnerId){
+    public ResponseEntity<DeliveryPartner> addOrderPartnerPair(@PathVariable String partnerId){
 
         DeliveryPartner deliveryPartner = null;
 
         //deliveryPartner should contain the value given by partnerId
+        deliveryPartner = ser.addOrderPartnerPair(partnerId);
 
         return new ResponseEntity<>(deliveryPartner, HttpStatus.CREATED);
     }
@@ -64,6 +70,9 @@ public class OrderController {
         Integer orderCount = 0;
 
         //orderCount should denote the orders given by a partner-id
+        orderCount = ser.getOrderCountByPartnerId(partnerId);
+
+
 
         return new ResponseEntity<>(orderCount, HttpStatus.CREATED);
     }
@@ -73,6 +82,7 @@ public class OrderController {
         List<String> orders = null;
 
         //orders should contain a list of orders by PartnerId
+        orders = ser.getOrdersByPartnerId(partnerId);
 
         return new ResponseEntity<>(orders, HttpStatus.CREATED);
     }
@@ -82,6 +92,7 @@ public class OrderController {
         List<String> orders = null;
 
         //Get all orders
+        orders = ser.getAllOrders();
         return new ResponseEntity<>(orders, HttpStatus.CREATED);
     }
 
@@ -90,6 +101,7 @@ public class OrderController {
         Integer countOfOrders = 0;
 
         //Count of orders that have not been assigned to any DeliveryPartner
+        countOfOrders = ser.getCountOfUnassignedOrders();
 
         return new ResponseEntity<>(countOfOrders, HttpStatus.CREATED);
     }
@@ -127,6 +139,7 @@ public class OrderController {
 
         //Delete an order and also
         // remove it from the assigned order of that partnerId
+
 
         return new ResponseEntity<>(orderId + " removed successfully", HttpStatus.CREATED);
     }
