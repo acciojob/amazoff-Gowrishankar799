@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("orders")
 public class OrderController {
 
-@Autowired
-Serviceclass ser;
+
+Serviceclass ser = new Serviceclass();
     @PostMapping("/add-order")
     public ResponseEntity<String> addOrder(@RequestBody Order order){
         ser.addOrder(order);

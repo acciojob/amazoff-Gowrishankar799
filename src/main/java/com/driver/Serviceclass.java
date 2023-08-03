@@ -7,8 +7,8 @@ import java.util.List;
 
 @Service
 public class Serviceclass {
-    @Autowired
-    Repo repo;
+
+    Repo repo = new Repo();
     public void addOrder(Order order){
         repo.addOrder(order);
     }
